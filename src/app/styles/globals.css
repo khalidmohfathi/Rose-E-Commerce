@@ -1,0 +1,70 @@
+@import "tailwindcss";
+@import "./tailwind.theme.css";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+.main-container {
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  @apply max-md:w-11/12
+}
+
+.hidden-scrollbar {
+  /* Firefox */
+  scrollbar-width: none;
+  /* hides scrollbar */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+
+  /* WebKit (Chrome, Safari, Edge Chromium) */
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.AccordionTrigger[data-state="open"] {
+  color: var(--color-primary) !important;
+  text-decoration: none;
+}
+
+.AccordionTrigger {
+  text-decoration: none;
+  border: 2px solid #2125294c !important;
+  outline: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.section-header {
+  position: relative;
+  z-index: 3;
+}
+
+.section-header::after {
+  content: "";
+  position: absolute;
+  width: 20%;
+  height: 2px;
+  background-color: #f82ba9;
+  bottom: -5px;
+  left: 0;
+  z-index: -1;
+}
+
+.section-header::before {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 50%;
+  background-color: #feedf7;
+  bottom: -5px;
+  left: 0;
+  z-index: -1;
+  border-radius: 10;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

@@ -1,0 +1,7 @@
+@theme {
+    --color-main: #160E4B;
+    --color-primary: #F82BA9;
+    --color-primary-subtle: #FEEDF7;
+    --color-primary-foreground: oklch(0.985 0 0);
+    --color-slate-gray: #757F95;
+}
