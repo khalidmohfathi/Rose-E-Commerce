@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import CashIcon from "@/images/Cash.svg";
+import CashIcon from "@/images/images/Cash.svg";
 import { checkoutSchema } from "@/lib/schemas/Checkout.schema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
