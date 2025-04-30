@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "@/components/common/Button";
+import { Button } from "@/components/ui/button";
 import FormInput from "@/components/common/FormInput";
 import useModal from "@/hooks/useModal";
 import { RegisterSchema } from "@/lib/schemas/Register.schema";
@@ -9,8 +9,9 @@ import { RegisterAction } from "@/lib/actions/Register.action";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import RadioGroup from "@/components/common/RadioGroup";
+import { Loader2 } from "lucide-react"; // Import the Loader2 icon from Lucide
 
-type RegisterInputs = z.infer<typeof RegisterSchema>;
+export type RegisterInputs = z.infer<typeof RegisterSchema>;
 
 interface RegisterResponse {
   success: boolean;
@@ -27,6 +28,7 @@ const genderOptions = [
 const Register: React.FC = () => {
   const { setCurrentModalName } = useModal();
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const {
     register,
@@ -40,13 +42,14 @@ const Register: React.FC = () => {
 
   const onSubmit = async (data: RegisterInputs) => {
     setSubmissionError(null);
+    setLoading(true); // Set loading to true when form is submitting
 
     try {
-      const response = await RegisterAction(data);
-      const result: RegisterResponse = await response.json();
+      const response: RegisterResponse = await RegisterAction(data);
+      console.log(response);
 
-      if (!result.success) {
-        throw new Error(result.error || "Failed to register");
+      if (!(response.message === "success")) {
+        throw new Error(response.error || "Failed to register");
       }
 
       toast.success("Account created successfully");
@@ -59,6 +62,8 @@ const Register: React.FC = () => {
         error instanceof Error ? error.message : "Failed to register";
       setSubmissionError(errorMessage);
       toast.error(errorMessage);
+    } finally {
+      setLoading(false); // Set loading to false after form submission
     }
   };
 
@@ -138,7 +143,7 @@ const Register: React.FC = () => {
         <button
           type="button"
           onClick={() => setCurrentModalName("LoginModal")}
-          className="text-[#F82BA9] hover:text-pink-600 underline font-medium cursor-pointer"
+          className="text-[#F82BA9] hover:text-pink-600 underline font-medium"
         >
           Log in
         </button>
@@ -150,7 +155,13 @@ const Register: React.FC = () => {
         </p>
       )}
 
-      <Button type="submit" label="Create Account" />
+      <Button type="submit" className="rounded-4xl" disabled={loading}>
+        {loading ? (
+          <Loader2 className="animate-spin mr-2 w-5 h-5" /> // Lucide loading spinner
+        ) : (
+          "Create Account"
+        )}
+      </Button>
     </form>
   );
 };

@@ -21,7 +21,7 @@ export default function OrderDetails() {
   if (!order) {
     return (
       <main className="main-container">
-        <p className="text-red-500">Loading your order...</p>
+        <p className="text-center text-primary">Loading your order...</p>
       </main>
     );
   }

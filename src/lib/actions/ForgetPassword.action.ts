@@ -11,7 +11,7 @@ export const ForgetPasswordAction = async (email: string) => {
         body: JSON.stringify({ email }),
       }
     );
-    return response;
+    return await response.json();
   } catch (error) {
     console.error("Error in ForgetPasswordAction:", error);
     throw error;

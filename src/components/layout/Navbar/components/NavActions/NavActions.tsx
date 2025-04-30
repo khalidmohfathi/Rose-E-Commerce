@@ -16,20 +16,20 @@ const ProfileMenu = () => {
   };
 
   return (
-    <div className="absolute bg-primary text-white shadow-md right-0 top-[130%] rounded-xl p-2 z-30 text-sm">
+    <div className="absolute bg-primary-subtle text-primary border-2 border-primary shadow-md right-0 top-[130%] rounded-xl p-2 z-30 text-sm">
       <button
         onMouseDown={() => {
           nav.push("/allOrders");
         }}
-        className="text-nowrap flex items-center gap-2 hover:bg-pink-400 rounded-lg p-2 cursor-pointer w-full"
+        className="text-nowrap flex items-center gap-2 hover:bg-white/80 rounded-lg p-2 cursor-pointer w-full"
       >
         <Truck size={22} />
         My Orders
       </button>
-      <div className="h-px w-full mx-auto bg-white my-2"></div>
+      <div className="h-px w-full mx-auto bg-primary my-2"></div>
       <button
         onMouseDown={logout}
-        className="text-nowrap flex items-center gap-2 hover:bg-pink-400 rounded-lg p-2 cursor-pointer w-full"
+        className="text-nowrap flex items-center gap-2 hover:bg-white/80 rounded-lg p-2 cursor-pointer w-full"
       >
         <LogOut size={22} />
         Logout

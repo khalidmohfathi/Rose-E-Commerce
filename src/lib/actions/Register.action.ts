@@ -1,8 +1,6 @@
 "use server";
-import { z } from "zod";
-import { RegisterSchema } from "../schemas/Register.schema";
 
-type RegisterInputs = z.infer<typeof RegisterSchema>;
+import { RegisterInputs } from "@/components/features/auth/RegisterForm";
 
 export const RegisterAction = async (data: RegisterInputs) => {
   try {
@@ -16,8 +14,15 @@ export const RegisterAction = async (data: RegisterInputs) => {
         body: JSON.stringify(data),
       }
     );
-    return res;
+
+    if (!res.ok) {
+      throw new Error(`${(await res.json()).error}`);
+    }
+
+    return await res.json();
   } catch (error) {
-    throw error;
+    throw new Error(
+      error instanceof Error ? error.message : "Failed to connect"
+    );
   }
 };

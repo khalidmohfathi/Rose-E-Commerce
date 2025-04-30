@@ -6,8 +6,7 @@ export default async function page() {
   let orders: Order[] = [];
   try {
     orders = await fetchAllOrders();
-  } catch (error) {
-    console.log("Error", error);
+  } catch {
     return (
       <main className="main-container">
         <p className="text-red-500">

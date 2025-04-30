@@ -3,7 +3,7 @@ import React from "react";
 import Wrapper from "./wrapper";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const Search = () => {
+const ProductSearch = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -27,11 +27,11 @@ const Search = () => {
         type="text"
         id="search-product"
         placeholder="Search"
-        className="p-2 rounded-3xl shadow border-gray-300"
+        className="p-2 px-3 rounded-3xl shadow border-gray-300 outline-primary"
         onChange={handleSearchChange}
       />
     </Wrapper>
   );
 };
 
-export default Search;
+export default ProductSearch;

@@ -1,8 +1,8 @@
 import React from "react";
-import Search from "./search";
-import PriceFilter from "./price-filter";
-import CategoryFilter from "./catigory-filter";
-import RatingFilter from "./rating-Filter";
+import ProductSearch from "./ProductSearch";
+import PriceFilter from "./PriceFilter";
+import CategoryFilter from "./CategoryFilter";
+import RatingFilter from "./RatingFilter";
 
 const SideCategoryFilters = () => {
   const filters = [
@@ -13,7 +13,7 @@ const SideCategoryFilters = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <Search />
+      <ProductSearch />
       {filters.map(({ id, Component }) => (
         <Component key={id} />
       ))}

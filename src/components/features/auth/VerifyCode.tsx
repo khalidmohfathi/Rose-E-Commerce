@@ -1,5 +1,5 @@
-import Button from "@/components/common/Button";
 import FormInput from "@/components/common/FormInput";
+import { Button } from "@/components/ui/button";
 import useModal from "@/hooks/useModal";
 import { ForgetPasswordAction } from "@/lib/actions/ForgetPassword.action";
 import { VerifyCodeAction } from "@/lib/actions/VerifyCode.action";
@@ -8,12 +8,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Loader2 } from "lucide-react"; // Import the Lucide loader icon
 
 type VerifyCodeInputs = z.infer<typeof verifyCodeSchema>;
 
 const VerifyCode = () => {
   const { setCurrentModalName } = useModal();
   const [error, setError] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false); // Add loading state
   const {
     register,
     handleSubmit,
@@ -25,21 +27,24 @@ const VerifyCode = () => {
 
   const onSubmit = async (data: VerifyCodeInputs) => {
     console.log("Form Data:", data);
-    // Handle form submission logic here
+    setLoading(true); // Set loading to true on form submission
     try {
-      const res = await VerifyCodeAction(data.resetCode);
-      const dataB = await res.json();
+      const dataB = await VerifyCodeAction(data.resetCode);
       console.log(dataB);
       if (dataB.error) {
         setError(dataB.error);
+        setLoading(false); // Set loading to false on error
         return;
       }
       setCurrentModalName("SetNewPasswordModal");
+      setLoading(false); // Set loading to false after successful submission
     } catch (error) {
       setError("Invalid code");
+      setLoading(false); // Set loading to false on error
       console.error("Error in ForgetPasswordAction:", error);
     }
   };
+
   return (
     <form
       onClick={(e) => e.stopPropagation()}
@@ -77,7 +82,13 @@ const VerifyCode = () => {
         </span>
       </p>
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-      <Button type="submit" label="Recover Password" />
+      <Button type="submit" className="rounded-4xl" disabled={loading}>
+        {loading ? (
+          <Loader2 className="animate-spin mr-2 w-5 h-5" /> // Lucide loading spinner
+        ) : (
+          "Recover Password"
+        )}
+      </Button>
     </form>
   );
 };

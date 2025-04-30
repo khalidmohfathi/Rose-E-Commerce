@@ -14,7 +14,7 @@ export const SetNewPasswordAction = async (
         body: JSON.stringify({ newPassword, email }),
       }
     );
-    return response;
+    return await response.json();
   } catch (error) {
     console.error("Error in SetNewPasswordAction:", error);
     throw error;

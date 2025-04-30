@@ -1,4 +1,4 @@
-import Button from "@/components/common/Button";
+import {Button} from "@/components/ui/button";
 import FormInput from "@/components/common/FormInput";
 import { ForgetPasswordAction } from "@/lib/actions/ForgetPassword.action";
 import useModal from "@/hooks/useModal";
@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import toast from "react-hot-toast";
 
 type ForgetPasswordInputs = z.infer<typeof forgetpasswordSchema>;
 
@@ -23,15 +24,13 @@ const ForgetPassword = () => {
   });
 
   const onSubmit = async (data: ForgetPasswordInputs) => {
-    console.log("Form Data:", data);
-    // Handle form submission logic here
     try {
-      const res = await ForgetPasswordAction(data.email);
+      await ForgetPasswordAction(data.email);
       localStorage.setItem("email", data.email);
+      toast.success("Email send to your Email");
       setCurrentModalName("VerifyCodeModal");
-      console.log(await res.json());
-    } catch (error) {
-      console.error("Error in ForgetPasswordAction:", error);
+    } catch {
+      toast.error("Invalid email or phone number");
       setError("Invalid email or phone number");
     }
   };
@@ -51,7 +50,7 @@ const ForgetPassword = () => {
         type="email"
       />
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-      <Button type="submit" label="Recover Password" />
+      <Button type="submit" className="rounded-4xl">Recover Password</Button>
     </form>
   );
 };

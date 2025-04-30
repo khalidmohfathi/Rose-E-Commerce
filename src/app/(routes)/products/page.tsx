@@ -9,7 +9,7 @@ interface Props {
   };
 }
 const Page = async ({ searchParams }: Props) => {
-  const params = await searchParams;
+  const params = searchParams;
 
   let products: Product[] = [];
   try {
@@ -30,23 +30,17 @@ const Page = async ({ searchParams }: Props) => {
     );
   }
 
-  if (!products || products.length === 0) {
-    return (
-      <main className="main-container">
-        <p>No products available.</p>
-      </main>
-    );
-  }
-
   return (
     <main className="main-container grid grid-rows-[minmax(0,auto)_minmax(0,auto)] md:grid-cols-[minmax(0,300px)_minmax(0,auto)] gap-6">
       <div className="">
         <SideCategoryFilters />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 content-start">
-        {products.map((item) => (
-          <ProductCard product={item} key={item.id} />
-        ))}
+        {!products || products.length === 0 ? (
+          <p className="col-span-full text-center text-primary mt-10">No products available.</p>
+        ) : (
+          products.map((item) => <ProductCard product={item} key={item.id} />)
+        )}
       </div>
     </main>
   );

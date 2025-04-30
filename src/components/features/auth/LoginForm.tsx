@@ -1,23 +1,22 @@
 "use client";
 import React, { useState } from "react";
-
-import Button from "@/components/common/Button";
 import FormInput from "@/components/common/FormInput";
-
 import { useForm, SubmitHandler } from "react-hook-form";
-
 import { getSession, signIn } from "next-auth/react";
-
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "@/lib/schemas/Login.schema";
 import { useAuth } from "@/components/Providers/AuthProvider/AuthProvider";
 import useModal from "@/hooks/useModal";
+import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react"; // Import the Lucide Loader2 icon
 
 type LoginFormInputs = z.infer<typeof schema>;
 
 const LoginForm: React.FC = () => {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
   const { setCurrentModalName, closeModal, openModal } = useModal();
   const { setUser } = useAuth();
   const {
@@ -27,6 +26,7 @@ const LoginForm: React.FC = () => {
   } = useForm<LoginFormInputs>({ resolver: zodResolver(schema), mode: "all" });
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+    setLoading(true); // Set loading to true when form is submitting
     try {
       const res = await signIn("credentials", {
         ...data,
@@ -40,10 +40,13 @@ const LoginForm: React.FC = () => {
         console.log("Login Success:", res);
         const session = await getSession();
         setUser(session);
-        setCurrentModalName(""); // Close modal on successful login
+        toast.success("Login Successfully");
+        setCurrentModalName("");
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false); // Set loading to false after submission
     }
   };
 
@@ -93,12 +96,11 @@ const LoginForm: React.FC = () => {
         </label>
         <span
           onClick={() => {
-            // console.log("about to open forget password modal");
             closeModal("LoginModal");
             openModal("forgetpasswordmodal");
             setCurrentModalName("forgetpasswordmodal");
           }}
-          className="text-sm text-[#F82BA9] underline cursor-pointer"
+          className="text-sm text-[#F82BA9] underline"
         >
           Forgot Password?
         </span>
@@ -118,8 +120,16 @@ const LoginForm: React.FC = () => {
           </span>
         </p>
       </div>
+
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-      <Button type="submit" label="Login" />
+
+      <Button type="submit" className="rounded-4xl" disabled={loading}>
+        {loading ? (
+          <Loader2 className="animate-spin mr-2 w-5 h-5" /> // Show spinner when loading
+        ) : (
+          "Login"
+        )}
+      </Button>
     </form>
   );
 };

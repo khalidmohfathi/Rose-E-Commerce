@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import CashIcon from "@/images/images/Cash.svg";
+import CashIcon from "@/images/Cash.svg";
 import { checkoutSchema } from "@/lib/schemas/Checkout.schema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PayAction } from "@/lib/actions/pay.action";
 import useCart from "./useCart";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 export type CheckoutFormInputs = z.infer<typeof checkoutSchema>;
 
 const useCheckout = () => {
@@ -57,14 +58,20 @@ const useCheckout = () => {
     setAccordionValue("item-2");
   };
   const pay = async () => {
-    const data = await PayAction(
-      userData as CheckoutFormInputs,
-      selectedPayment
-    );
-    if (data.session?.url) {
-      router.push(data.session.url);
-    }else{
-      getUserCartItemsData()
+    try {
+      const data = await PayAction(
+        userData as CheckoutFormInputs,
+        selectedPayment
+      );
+      if (data.session?.url) {
+        router.push(data.session.url);
+      } else {
+        getUserCartItemsData();
+        toast.error("Your order has been confiermed");
+        router.push("/allOrders");
+      }
+    } catch {
+      toast.error("Error accourd");
     }
   };
   return {

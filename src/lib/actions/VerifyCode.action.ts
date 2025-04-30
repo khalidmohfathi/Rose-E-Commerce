@@ -11,7 +11,7 @@ export const VerifyCodeAction = async (resetCode: string) => {
         body: JSON.stringify({ resetCode }),
       }
     );
-    return response;
+    return await response.json();
   } catch (error) {
     console.error("Error in VerifyCodeAction:", error);
     throw error;

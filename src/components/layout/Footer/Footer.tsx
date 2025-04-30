@@ -43,7 +43,7 @@ export default function Footer() {
         <input
           type="email"
           placeholder="Enter Your Email"
-          className="w-full p-4 pr-32 rounded-full text-sm placeholder:text-slate-gray font-medium bg-white shadow"
+          className="w-full p-4 pr-32 rounded-full text-sm placeholder:text-slate-gray font-medium bg-white shadow outline-primary"
         />
         <Button className="absolute top-1/2 right-1.5 transform -translate-y-1/2 rounded-full px-5 h-10 flex items-center gap-1.5">
           <span className="text-sm">Subscribe</span>
